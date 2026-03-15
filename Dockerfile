@@ -16,4 +16,5 @@ RUN npm run build
 
 # Run the built Nest app
 ENV NODE_ENV=production
+EXPOSE 8080
 CMD ["node", "dist/main.js"]

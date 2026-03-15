@@ -74,7 +74,7 @@ async function bootstrap(): Promise<void> {
   }
 
   const port = config.get<number>('PORT', 3001);
-  await app.listen(port);
+  await app.listen(port, '0.0.0.0');
   logger.log(`API running on http://localhost:${port}/api/v1`);
 }
 
