@@ -1,8 +1,8 @@
-import { Injectable, NotFoundException, Inject } from "@nestjs/common";
-import { eq } from "drizzle-orm";
-import { DB, type DrizzleDB } from "@/database/database.module";
-import * as schema from "@/database/schema";
-import type { CreateSdrDto, UpdateSdrDto } from "./sdrs.dto";
+import { Injectable, NotFoundException, Inject } from '@nestjs/common';
+import { eq } from 'drizzle-orm';
+import { DB, type DrizzleDB } from '../../database/database.module';
+import * as schema from '../../database/schema';
+import type { CreateSdrDto, UpdateSdrDto } from './sdrs.dto';
 
 @Injectable()
 export class SdrsService {
@@ -51,7 +51,7 @@ export class SdrsService {
     const rows = await this.db
       .select({
         prospectId: schema.assignments.prospectId,
-        sdrId:      schema.assignments.sdrId,
+        sdrId: schema.assignments.sdrId,
       })
       .from(schema.assignments);
 
@@ -70,7 +70,7 @@ export class SdrsService {
         .values({ prospectId, sdrId })
         .onConflictDoUpdate({
           target: schema.assignments.prospectId,
-          set:    { sdrId, assignedAt: new Date() },
+          set: { sdrId, assignedAt: new Date() },
         });
     }
   }

@@ -1,10 +1,10 @@
-import { Global, Module, Logger } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
-import { drizzle } from "drizzle-orm/neon-http";
-import { neon } from "@neondatabase/serverless";
-import * as schema from "./schema";
+import { Global, Module, Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { Pool } from 'pg';
+import { drizzle } from 'drizzle-orm/node-postgres';
+import * as schema from './schema';
 
-export const DB = Symbol("DRIZZLE_DB");
+export const DB = Symbol('DRIZZLE_DB');
 export type DrizzleDB = ReturnType<typeof drizzle<typeof schema>>;
 
 @Global()
@@ -14,11 +14,11 @@ export type DrizzleDB = ReturnType<typeof drizzle<typeof schema>>;
       provide: DB,
       inject: [ConfigService],
       useFactory: (config: ConfigService): DrizzleDB => {
-        const url = config.getOrThrow<string>("DATABASE_URL");
-        const logger = new Logger("Database");
-        logger.log("Connecting to Neon Postgres…");
-        const sql = neon(url);
-        return drizzle(sql, { schema, logger: false });
+        const url = config.getOrThrow<string>('DATABASE_URL');
+        const logger = new Logger('Database');
+        logger.log('Connecting to Postgres…');
+        const pool = new Pool({ connectionString: url });
+        return drizzle(pool, { schema, logger: false });
       },
     },
   ],

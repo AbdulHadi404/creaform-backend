@@ -1,7 +1,7 @@
 import { Controller, Get, Inject } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { sql } from 'drizzle-orm';
-import { DB, type DrizzleDB } from '@/database/database.module';
+import { DB, type DrizzleDB } from '../../database/database.module';
 
 @ApiTags('health')
 @Controller('health')

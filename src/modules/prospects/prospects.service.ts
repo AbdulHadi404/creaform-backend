@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException, Inject } from '@nestjs/common';
 import { and, eq, ilike, or, inArray, sql, asc } from 'drizzle-orm';
-import type { DrizzleDB } from '@/database/database.module';
-import { DB } from '@/database/database.module';
-import * as schema from '@/database/schema';
+import type { DrizzleDB } from '../../database/database.module';
+import { DB } from '../../database/database.module';
+import * as schema from '../../database/schema';
 import type {
   CreateProspectDto,
   UpdateProspectDto,

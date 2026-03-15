@@ -1,8 +1,8 @@
-import { Injectable, NotFoundException, Inject } from "@nestjs/common";
-import { eq, and } from "drizzle-orm";
-import { DB, type DrizzleDB } from "@/database/database.module";
-import * as schema from "@/database/schema";
-import type { CreateContactDto, UpdateContactDto } from "./contacts.dto";
+import { Injectable, NotFoundException, Inject } from '@nestjs/common';
+import { eq, and } from 'drizzle-orm';
+import { DB, type DrizzleDB } from '../../database/database.module';
+import * as schema from '../../database/schema';
+import type { CreateContactDto, UpdateContactDto } from './contacts.dto';
 
 @Injectable()
 export class ContactsService {
@@ -16,13 +16,16 @@ export class ContactsService {
       .orderBy(schema.contacts.addedAt);
   }
 
-  async findOne(prospectId: number, contactId: number): Promise<schema.ContactRow> {
+  async findOne(
+    prospectId: number,
+    contactId: number,
+  ): Promise<schema.ContactRow> {
     const [row] = await this.db
       .select()
       .from(schema.contacts)
       .where(
         and(
-          eq(schema.contacts.id,         contactId),
+          eq(schema.contacts.id, contactId),
           eq(schema.contacts.prospectId, prospectId),
         ),
       )
@@ -36,18 +39,21 @@ export class ContactsService {
     return row;
   }
 
-  async create(prospectId: number, dto: CreateContactDto): Promise<schema.ContactRow> {
+  async create(
+    prospectId: number,
+    dto: CreateContactDto,
+  ): Promise<schema.ContactRow> {
     const [row] = await this.db
       .insert(schema.contacts)
       .values({
         prospectId,
-        name:     dto.name,
-        title:    dto.title,
-        dept:     dto.dept    ?? "Engineering",
+        name: dto.name,
+        title: dto.title,
+        dept: dto.dept ?? 'Engineering',
         linkedin: dto.linkedin,
-        email:    dto.email,
-        phone:    dto.phone,
-        notes:    dto.notes,
+        email: dto.email,
+        phone: dto.phone,
+        notes: dto.notes,
       })
       .returning();
     return row;
@@ -65,7 +71,7 @@ export class ContactsService {
       .set(dto)
       .where(
         and(
-          eq(schema.contacts.id,         contactId),
+          eq(schema.contacts.id, contactId),
           eq(schema.contacts.prospectId, prospectId),
         ),
       )
@@ -80,7 +86,7 @@ export class ContactsService {
       .delete(schema.contacts)
       .where(
         and(
-          eq(schema.contacts.id,         contactId),
+          eq(schema.contacts.id, contactId),
           eq(schema.contacts.prospectId, prospectId),
         ),
       );

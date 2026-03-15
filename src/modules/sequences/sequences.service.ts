@@ -1,11 +1,14 @@
 import {
-  Injectable, NotFoundException, ConflictException, Inject,
-} from "@nestjs/common";
-import { eq, and } from "drizzle-orm";
-import { DB, type DrizzleDB } from "@/database/database.module";
-import * as schema from "@/database/schema";
-import { SEQUENCE_TEMPLATE } from "./sequence-template";
-import type { EnrollSequenceDto, UpdateStepDto } from "./sequences.dto";
+  Injectable,
+  NotFoundException,
+  ConflictException,
+  Inject,
+} from '@nestjs/common';
+import { eq, and } from 'drizzle-orm';
+import { DB, type DrizzleDB } from '../../database/database.module';
+import * as schema from '../../database/schema';
+import { SEQUENCE_TEMPLATE } from './sequence-template';
+import type { EnrollSequenceDto, UpdateStepDto } from './sequences.dto';
 
 @Injectable()
 export class SequencesService {
@@ -23,7 +26,7 @@ export class SequencesService {
       .where(
         and(
           eq(schema.sequences.prospectId, prospectId),
-          eq(schema.sequences.contactId,  contactId),
+          eq(schema.sequences.contactId, contactId),
         ),
       )
       .limit(1);
@@ -33,10 +36,10 @@ export class SequencesService {
   private buildInitialSteps(): schema.SequenceStepRow[] {
     return SEQUENCE_TEMPLATE.map((t) => ({
       stepNumber: t.step,
-      status:     "pending" as const,
-      outcome:    "",
-      logNote:    "",
-      loggedAt:   null,
+      status: 'pending' as const,
+      outcome: '',
+      logNote: '',
+      loggedAt: null,
     }));
   }
 
@@ -49,7 +52,10 @@ export class SequencesService {
       .where(eq(schema.sequences.prospectId, prospectId));
   }
 
-  async findOne(prospectId: number, contactId: number): Promise<schema.SequenceRow> {
+  async findOne(
+    prospectId: number,
+    contactId: number,
+  ): Promise<schema.SequenceRow> {
     const row = await this.findSequence(prospectId, contactId);
     if (!row) {
       throw new NotFoundException(
@@ -76,8 +82,8 @@ export class SequencesService {
       .values({
         prospectId,
         contactId,
-        enrolledBy: dto.enrolledBy ?? "SDR",
-        steps:      this.buildInitialSteps(),
+        enrolledBy: dto.enrolledBy ?? 'SDR',
+        steps: this.buildInitialSteps(),
       })
       .returning();
 
@@ -95,12 +101,15 @@ export class SequencesService {
       if (i !== dto.stepIndex) return s;
       return {
         ...s,
-        status:   dto.status,
-        outcome:  dto.outcome  ?? s.outcome,
-        logNote:  dto.logNote  ?? s.logNote,
-        loggedAt: new Date().toLocaleString("en-US", {
-          month: "short", day: "numeric", year: "numeric",
-          hour: "numeric", minute: "2-digit",
+        status: dto.status,
+        outcome: dto.outcome ?? s.outcome,
+        logNote: dto.logNote ?? s.logNote,
+        loggedAt: new Date().toLocaleString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+          hour: 'numeric',
+          minute: '2-digit',
         }),
       };
     });
@@ -111,7 +120,7 @@ export class SequencesService {
       .where(
         and(
           eq(schema.sequences.prospectId, prospectId),
-          eq(schema.sequences.contactId,  contactId),
+          eq(schema.sequences.contactId, contactId),
         ),
       )
       .returning();
@@ -126,7 +135,7 @@ export class SequencesService {
       .where(
         and(
           eq(schema.sequences.prospectId, prospectId),
-          eq(schema.sequences.contactId,  contactId),
+          eq(schema.sequences.contactId, contactId),
         ),
       );
   }
