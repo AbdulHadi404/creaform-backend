@@ -11,6 +11,7 @@ RUN npm ci --silent
 # Copy source and build
 COPY . .
 RUN npm run build
+RUN ls -la dist && ls -la dist/src || true
 
 # Run the built Nest app
 CMD ["node", "dist/main.js"]
