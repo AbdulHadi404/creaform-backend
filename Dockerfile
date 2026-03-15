@@ -13,4 +13,4 @@ COPY . .
 RUN npm run build
 
 # Run the built Nest app
-CMD ["node", "dist/src/main.js"]
+CMD ["node", "dist/main.js"]
