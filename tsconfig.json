@@ -5,6 +5,7 @@
     "esModuleInterop": true,
     "isolatedModules": true,
     "declaration": true,
+    "emitDeclarationOnly": false,
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -17,7 +18,7 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "incremental": true,
+    "incremental": false,
     "skipLibCheck": true,
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
